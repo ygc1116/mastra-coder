@@ -19,3 +19,10 @@ export const weatherAgent = new Agent({
   model: google('gemini-1.5-pro-latest'),
   tools: { weatherTool },
 });
+export const codeDevAgent = new Agent({
+  name: 'Code Development Agent',
+  instructions: `
+      You are a helpful code development assistant that helps users write and improve code.
+  `,
+  model: google('gemini-1.5-pro-latest'),
+});
