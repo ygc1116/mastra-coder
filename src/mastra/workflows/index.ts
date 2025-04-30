@@ -182,4 +182,37 @@ const weatherWorkflow = new Workflow({
 
 weatherWorkflow.commit();
 
-export { weatherWorkflow };
+import { weatherTool } from '../tools';
+
+const temperatureAlertWorkflow = new Workflow({
+  name: 'temperature-alert-workflow',
+  triggerSchema: z.object({
+    city: z.string().describe('The city to monitor'),
+    temperatureThreshold: z.number().describe('The temperature threshold in Celsius'),
+  }),
+})
+  .step(
+    new Step({
+      id: 'check-temperature',
+      description: 'Checks the temperature and alerts if it exceeds the threshold',
+      execute: async ({ context }) => {
+        const triggerData = context?.getStepResult<{ city: string; temperatureThreshold: number }>('trigger');
+
+        if (!triggerData) {
+          throw new Error('Trigger data not found');
+        }
+
+        const weatherData = await weatherTool.execute({ context: { location: triggerData.city } });
+
+        if (weatherData.temperature > triggerData.temperatureThreshold) {
+          console.log(`Temperature in ${triggerData.city} is ${weatherData.temperature}°C, which is above the threshold of ${triggerData.temperatureThreshold}°C!`);
+        } else {
+          console.log(`Temperature in ${triggerData.city} is ${weatherData.temperature}°C, which is below the threshold of ${triggerData.temperatureThreshold}°C.`);
+        }
+      },
+    }),
+  );
+
+temperatureAlertWorkflow.commit();
+
+export { weatherWorkflow, temperatureAlertWorkflow };
