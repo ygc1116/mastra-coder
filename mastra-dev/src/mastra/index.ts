@@ -6,7 +6,7 @@ import { weatherAgent } from './agents';
 import { codeGeneratorAgent } from './agents/codeGeneratorAgent';
 
 export const mastra = new Mastra({
-  workflows: { weatherWorkflow },
+  workflows: { weatherWorkflow, codeGeneratorWorkflow },
   agents: { weatherAgent, codeGeneratorAgent },
   logger: createLogger({
     name: 'Mastra',
