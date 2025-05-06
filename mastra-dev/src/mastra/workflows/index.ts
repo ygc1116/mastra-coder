@@ -182,4 +182,6 @@ const weatherWorkflow = new Workflow({
 
 weatherWorkflow.commit();
 
-export { weatherWorkflow };
+import { codeGeneratorWorkflow } from './codeGeneratorWorkflow';
+
+export { weatherWorkflow, codeGeneratorWorkflow };
